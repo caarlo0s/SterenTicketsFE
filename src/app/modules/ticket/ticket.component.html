@@ -1,0 +1,61 @@
+<div>
+  <a mat-raised-button color="primary" routerLink="/login">Login</a>
+</div>
+<div class="step">
+
+  <mat-stepper linear  orientation="vertical" #stepper>
+    <mat-step>
+
+      <ng-template matStepLabel>Selecciona el error</ng-template>
+      <mat-form-field>
+        <mat-label>Selecciona el error</mat-label>
+        <mat-select [(ngModel)]="errorSelected" (selectionChange)="printSteps($event)"
+          [ngModelOptions]="{standalone: true}">
+          <mat-option *ngFor="let error of errorList" [value]="error.id_error">{{error.descripcion}}</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+
+      <div>
+        <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+      </div>
+
+    </mat-step>
+    <mat-step >
+      <ng-template matStepLabel>Describe el problema</ng-template>
+      <form [formGroup]="formComents">
+        <mat-form-field>
+          <mat-label>Escribe tu nombre</mat-label>
+          <input matInput formControlName="nombre" required>
+          <mat-error  *ngIf="formComents.controls['nombre'].errors?.['nombre'] && formComents.controls['nombre'].touched">Nombre es requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Comentarios</mat-label>
+          <textarea matInput [disabled]="stepsByError.paso_dos=='0'" formControlName="comentarios" required></textarea>
+        </mat-form-field>
+        <label *ngIf="stepsByError.paso_dos=='0'">Opción "Comentarios" deshabilitada para:
+          {{stepsByError.descripcion}}</label>
+
+
+        <div>
+          <button mat-raised-button matStepperNext color="primary">Siguiente</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Selecciona departamento</ng-template>
+      <mat-form-field>
+        <mat-label>Selecciona el departamento</mat-label>
+        <mat-select [(ngModel)]="departamentSelected" (selectionChange)="selectDepartament($event)"
+          [ngModelOptions]="{standalone: true}">
+          <mat-option *ngFor="let deaprtament of departamentList" [value]="deaprtament.id_departamento">{{deaprtament.nombre}}-{{deaprtament.area}}</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="CrearTicket()">Crear Ticket </button>
+    </mat-step>
+
+  </mat-stepper>
+</div>
+
